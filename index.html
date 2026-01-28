@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grade 8 Earth Science - Weeks 1 & 2</title>
+    <style>
+        :root { --zoom: 1; }
+        body { 
+            font-family: "Times New Roman", Times, serif; 
+            margin: 0; padding: 0; 
+            background-color: #f4f7f6; 
+            zoom: var(--zoom);
+            display: flex; height: 100vh; overflow: hidden;
+        }
+
+        /* Panels */
+        .left-panel { flex: 1; padding: 40px; overflow-y: auto; background: white; }
+        .right-panel { width: 500px; background: #2c3e50; color: white; padding: 25px; overflow-y: auto; border-left: 6px solid #1a252f; transition: 0.3s; }
+        .hidden { display: none !important; }
+
+        /* Typography */
+        header h1 { font-size: 60px; color: #b22222; text-align: center; margin-bottom: 0; }
+        .slide-content h2 { font-size: 55px; color: #2980b9; margin-top: 40px; border-bottom: 2px solid #eee; }
+        .slide-content h3 { font-size: 45px; color: #d35400; }
+        .slide-content p, .slide-content li { font-size: 50px; line-height: 1.2; margin-bottom: 20px; }
+        
+        /* Study Guide Tables */
+        .guide-table { width: 100%; border-collapse: collapse; font-size: 24px; margin: 20px 0; }
+        .guide-table th, .guide-table td { border: 2px solid #333; padding: 15px; text-align: left; }
+        .guide-table th { background-color: #f2f2f2; }
+
+        /* Activity Styling */
+        .act-container { margin-top: 50px; border: 2px solid #34495e; padding: 20px; border-radius: 10px; background: #fff; color: black; }
+        .act-header { font-size: 32px; color: #d35400; border-bottom: 2px solid #d35400; margin-bottom: 20px; font-weight: bold; }
+        .q-text { font-size: 20px; margin: 10px 0; }
+        input[type="text"] { font-size: 18px; padding: 8px; width: 220px; border: 1px solid #34495e; border-radius: 4px; }
+
+        /* Venn Diagram */
+        .venn-container { display: flex; justify-content: center; align-items: center; position: relative; height: 350px; margin: 40px 0; }
+        .circle { width: 280px; height: 280px; border-radius: 50%; border: 3px solid #3498db; position: absolute; opacity: 0.8; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; text-align: center; }
+        .circle.left { left: 30px; background: #ebf5fb; }
+        .circle.right { right: 30px; background: #fef9e7; border-color: #f1c40f; }
+
+        /* Assessment */
+        .quiz-q { margin-bottom: 30px; border-bottom: 1px solid #555; padding-bottom: 15px; }
+        .quiz-q p { font-size: 18px; font-weight: bold; }
+        
+        /* Navigation */
+        .top-nav { position: fixed; top: 0; left: 0; width: 100%; background: #fff; border-bottom: 1px solid #ddd; padding: 10px; z-index: 1000; display: flex; gap: 10px; }
+        .btn { padding: 10px 15px; cursor: pointer; border: none; border-radius: 5px; font-weight: bold; }
+        .btn-blue { background: #3498db; color: white; }
+        .btn-orange { background: #e67e22; color: white; }
+        .btn-green { background: #27ae60; color: white; width: 100%; margin-top: 20px; font-size: 22px; }
+
+        #login-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 2000; display: flex; justify-content: center; align-items: center; }
+        .login-box { background: white; padding: 40px; border-radius: 10px; text-align: center; width: 350px; }
+        .slide { display: none; margin-top: 80px; }
+        .slide.active { display: block; }
+
+        /* Image Display */
+        .lesson-img { max-width: 100%; height: auto; border-radius: 10px; margin: 20px 0; border: 2px solid #ddd; }
+    </style>
+</head>
+<body>
+
+<div id="login-overlay">
+    <div class="login-box">
+        <h2>Earth Science Study Portal</h2>
+        <input type="text" id="studName" placeholder="Student Full Name" style="width:90%; padding:12px; margin:10px;">
+        <input type="text" id="studGrade" placeholder="Grade & Section" style="width:90%; padding:12px; margin:10px;">
+        <button class="btn btn-blue" style="width:100%;" onclick="login()">Enter Study Guide</button>
+    </div>
+</div>
+
+<div class="top-nav">
+    <button class="btn btn-blue" onclick="adjustZoom(0.1)">Zoom In +</button>
+    <button class="btn btn-blue" onclick="adjustZoom(-0.1)">Zoom Out -</button>
+    <button class="btn btn-orange" onclick="toggleElement('activities-section')">Activities</button>
+    <button class="btn btn-orange" onclick="toggleElement('assessment-panel')">Assessment</button>
+</div>
+
+<div class="left-panel">
+    <header>
+        <h1>Earth Science</h1>
+        <p style="font-size: 24px; text-align:center;">Complete Study Guide for Weeks 1 & 2</p>
+    </header>
+
+    <div id="slides-container">
+        <div class="slide active">
+            <div class="slide-content">
+                <h2>The Pacific Ring of Fire</h2>
+                
+                <p>The <strong>Pacific Ring of Fire</strong> is a horseshoe-shaped zone surrounding the Pacific Ocean where most earthquakes and volcanoes in the world occur.</p>
+                <ul>
+                    <li><strong>40,000 km:</strong> Length of the zone.</li>
+                    <li><strong>90%:</strong> Of world's earthquakes.</li>
+                    <li><strong>75%:</strong> Of world's active volcanoes.</li>
+                </ul>
+                <h3>Causes: Tectonic Movement</h3>
+                <ul>
+                    <li><strong>Subduction:</strong> One plate sinks under another.</li>
+                    <li><strong>Collision:</strong> Plates crash together.</li>
+                    <li><strong>Sliding:</strong> Plates slide past each other.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Geologic Faults</h2>
+                [Image comparing normal fault, reverse fault, and strike-slip fault movements]
+                <p>A fault is a fracture in the Earth’s crust where rocks move due to stress.</p>
+                <table class="guide-table">
+                    <thead>
+                        <tr><th>Type</th><th>Angle</th><th>Slip Direction</th><th>Force</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Normal</td><td>Steep</td><td>Hanging wall DOWN</td><td>Tension</td></tr>
+                        <tr><td>Reverse</td><td>Steep</td><td>Hanging wall UP</td><td>Compression</td></tr>
+                        <tr><td>Thrust</td><td>Low</td><td>Hanging wall OVER</td><td>Compression</td></tr>
+                        <tr><td>Strike-Slip</td><td>Vertical</td><td>Horizontal</td><td>Shearing</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Earthquake Effects</h2>
+                <p>Earthquakes impact communities through primary (direct) and secondary (indirect) effects.</p>
+                [Image showing common earthquake hazards including building collapse, tsunamis, landslides, and soil liquefaction]
+                <ul>
+                    <li><strong>Primary:</strong> Ground shaking, Building collapse.</li>
+                    <li><strong>Secondary:</strong> Tsunami, Landslides, <strong>Liquefaction</strong>.</li>
+                </ul>
+                <h2>Magnitude and Risk</h2>
+                <p>A 1.0 increase in Magnitude means 10x stronger shaking and <strong>32x more energy</strong> released.</p>
+                
+            </div>
+        </div>
+    </div>
+
+    <div id="activities-section" class="hidden">
+        <div class="act-container">
+            <div class="act-header">Activity 1: Fill in the Blanks</div>
+            <p class="q-text">1. The Ring of Fire is <input type="text" id="f1">-shaped.</p>
+            <p class="q-text">2. <input type="text" id="f2"> causes plates to sink.</p>
+            <p class="q-text">3. Tension forces create <input type="text" id="f3"> faults.</p>
+            <p class="q-text">4. Magnitude 7 releases <input type="text" id="f4"> times more energy than Mag 6.</p>
+            <p class="q-text">5. Soil behaving like liquid is <input type="text" id="f5">.</p>
+        </div>
+
+        <div class="act-container">
+            <div class="act-header">Activity 2: Matching Type</div>
+            <p class="q-text">Shearing force matches: <select id="m1"><option>Select</option><option value="4">Strike-Slip</option><option>Normal</option></select></p>
+            <p class="q-text">Compression (Low angle) matches: <select id="m2"><option>Select</option><option value="4">Thrust Fault</option><option>Reverse Fault</option></select></p>
+        </div>
+
+        <div class="act-container">
+            <div class="act-header">Activity 3: Identification</div>
+            <p class="q-text">1. PH Seismic Agency: <input type="text" id="id1"></p>
+            <p class="q-text">2. Block below the fault plane: <input type="text" id="id2"></p>
+        </div>
+
+        <div class="act-container">
+            <div class="act-header">Activity 4: Venn Diagram (Mag vs Intensity)</div>
+            <div class="venn-container">
+                <div class="circle left"><strong>Magnitude</strong><br><input type="text" id="v1" placeholder="Instrument?"></div>
+                <div class="circle right"><strong>Intensity</strong><br><input type="text" id="v2" placeholder="Scale used?"></div>
+            </div>
+        </div>
+    </div>
+
+    <div style="margin-top: 40px; padding-bottom: 100px; display: flex; gap: 10px;">
+        <button class="btn btn-blue" onclick="changeSlide(-1)">Previous Topic</button>
+        <button class="btn btn-blue" onclick="changeSlide(1)">Next Topic</button>
+    </div>
+</div>
+
+<div class="right-panel hidden" id="assessment-panel">
+    <h2>Final Assessment (30 Items)</h2>
+    <div id="quiz-container"></div>
+    <button class="btn btn-green" onclick="submitLesson()">Download Results</button>
+</div>
+
+<script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    let zoomLevel = 1;
+
+    const quizItems = [
+        { q: "What is the shape of the Pacific Ring of Fire?", a: "A", c: ["Horseshoe", "Circular", "Triangle", "Hexagon"] },
+        { q: "How long is the Pacific Ring of Fire?", a: "C", c: ["10,000km", "25,000km", "40,000km", "60,000km"] },
+        { q: "What force causes Normal Faults?", a: "B", c: ["Compression", "Tension", "Shearing", "Gravity"] },
+        { q: "What happens in a Reverse Fault?", a: "A", c: ["Hanging wall moves up", "Hanging wall moves down", "Horizontal slide", "No movement"] },
+        { q: "What is the force for Strike-Slip faults?", a: "C", c: ["Tension", "Compression", "Shearing", "Folding"] },
+        { q: "Which process forms volcanoes?", a: "D", c: ["Erosion", "Sliding", "Collision", "Subduction"] },
+        { q: "Energy increase per 1.0 magnitude is:", a: "B", c: ["10x", "32x", "100x", "1000x"] },
+        { q: "Soil liquefaction is a ______ effect.", a: "B", c: ["Primary", "Secondary", "Tertiary", "Initial"] },
+        { q: "Which fault angle is low (less than 45°)?", a: "C", c: ["Normal", "Reverse", "Thrust", "Strike-Slip"] },
+        { q: "PHIVOLCS monitors what?", a: "A", c: ["Earthquakes", "Weather", "Stars", "Forests"] },
+    ];
+
+    function login() { if(document.getElementById('studName').value) { document.getElementById('login-overlay').style.display = 'none'; generateQuiz(); } }
+    function toggleElement(id) { document.getElementById(id).classList.toggle('hidden'); }
+    function adjustZoom(val) { zoomLevel += val; document.body.style.zoom = zoomLevel; }
+    function changeSlide(dir) {
+        slides[currentSlide].classList.remove('active');
+        currentSlide = (currentSlide + dir + slides.length) % slides.length;
+        slides[currentSlide].classList.add('active');
+    }
+
+    function generateQuiz() {
+        const container = document.getElementById('quiz-container');
+        quizItems.forEach((item, i) => {
+            let html = `<div class="quiz-q"><p>${i+1}. ${item.q}</p>`;
+            item.c.forEach((choice, idx) => {
+                let letter = String.fromCharCode(65 + idx);
+                html += `<label style="display:block; margin:5px 0;"><input type="radio" name="q${i}" value="${letter === item.a ? 1 : 0}"> ${letter}. ${choice}</label>`;
+            });
+            container.innerHTML += html + `</div>`;
+        });
+    }
+
+    function submitLesson() {
+        let actScore = 0;
+        if(document.getElementById('f1').value.toLowerCase().includes('horseshoe')) actScore += 24;
+        if(document.getElementById('m1').value == "4") actScore += 24;
+        if(document.getElementById('id1').value.toLowerCase().includes('phivolcs')) actScore += 24;
+        if(document.getElementById('v1').value.toLowerCase().includes('seismo')) actScore += 24;
+        if(document.getElementById('f5').value.toLowerCase().includes('liquefaction')) actScore += 24;
+
+        let quizScore = 0;
+        quizItems.forEach((_, i) => {
+            let sel = document.querySelector(`input[name="q${i}"]:checked`);
+            if(sel) quizScore += parseInt(sel.value);
+        });
+
+        const name = document.getElementById('studName').value;
+        const report = `STUDENT STUDY REPORT\nName: ${name}\n\nActivity Score: ${actScore}/120\nAssessment Score: ${quizScore}/30\nTOTAL: ${actScore+quizScore}/150`;
+        const blob = new Blob([report], {type: 'text/plain'});
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `${name}_Earthquake_Science.txt`;
+        link.click();
+        alert("Study results downloaded!");
+    }
+</script>
+
+</body>
+</html>
